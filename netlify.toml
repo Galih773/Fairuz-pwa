@@ -1,0 +1,39 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/aplikasi.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/aplikasi"
+  to = "/"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
