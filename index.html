@@ -645,6 +645,67 @@
             color: #cbd5e1;
         }
 
+        .loaded-record-actions {
+            margin-top: 0.5rem;
+            gap: 0.5rem;
+        }
+
+        .loaded-record-btn {
+            flex: 1 1 0%;
+            padding: 0.625rem 0.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid transparent;
+            color: #ffffff;
+            font-size: 0.875rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+            box-shadow: 0 4px 10px rgba(2, 6, 23, 0.18);
+        }
+
+        .loaded-record-btn:active {
+            transform: scale(0.985);
+        }
+
+        .loaded-record-btn-update {
+            background: #f59e0b;
+            border-color: #d97706;
+        }
+
+        .loaded-record-btn-update:hover {
+            background: #d97706;
+        }
+
+        .loaded-record-btn-new {
+            background: #059669;
+            border-color: #047857;
+        }
+
+        .loaded-record-btn-new:hover {
+            background: #047857;
+        }
+
+        html.dark .loaded-record-btn-update {
+            background: #d97706;
+            border-color: #b45309;
+        }
+
+        html.dark .loaded-record-btn-update:hover {
+            background: #b45309;
+        }
+
+        html.dark .loaded-record-btn-new {
+            background: #0d9488;
+            border-color: #0f766e;
+        }
+
+        html.dark .loaded-record-btn-new:hover {
+            background: #0f766e;
+        }
+
         .history-toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -775,6 +836,7 @@
         html.dark .history-btn-red:hover {
             background: rgba(127, 29, 29, 0.55);
         }
+
 
         .history-row-actions {
             display: inline-flex;
@@ -1057,8 +1119,8 @@
                         class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 pb-1">
                         Kondisi Operasional</h3>
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="input-group"><label class="input-label" for="phys-Q">Laju Alir (m³/s)</label><input
-                                type="number" id="phys-Q" value="2.5" step="0.1" class="custom-input"
+                        <div class="input-group"><label class="input-label" for="phys-Vi">Kec. Inlet (m/s)</label><input
+                                type="number" id="phys-Vi" value="25" step="0.5" class="custom-input"
                                 oninput="triggerRecalc()"></div>
                         <div class="input-group"><label class="input-label" for="phys-T">Suhu Gas (K)</label><input
                                 type="number" id="phys-T" value="298" step="1" class="custom-input"
@@ -1083,28 +1145,35 @@
                     </div>
                 </div>
 
-                <button onclick="saveToHistory()"
-                    class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-colors shadow-md flex justify-center items-center gap-2">
-                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
-                        </path>
-                    </svg>
-                    Simpan Perhitungan
-                </button>
-                <div class="flex items-center gap-2 mt-2">
-                    <label class="text-[11px] font-bold text-slate-500 dark:text-slate-400 whitespace-nowrap"
-                        for="history-limit">
-                        Max History:
-                    </label>
-                    <select id="history-limit" class="custom-input py-1 text-xs" onchange="onHistoryLimitChange()">
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
+                <div id="save-action-area">
+                    <button id="save-history-btn" onclick="saveNewToHistory()"
+                        class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-colors shadow-md flex justify-center items-center gap-2">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                            </path>
+                        </svg>
+                        Simpan Perhitungan
+                    </button>
+                    <div id="save-loaded-actions" style="display:none" class="loaded-record-actions">
+                        <button onclick="updateLoadedRecord()" class="loaded-record-btn loaded-record-btn-update">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                </path>
+                            </svg>
+                            Update Record
+                        </button>
+                        <button onclick="saveNewToHistory()" class="loaded-record-btn loaded-record-btn-new">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Simpan Baru
+                        </button>
+                    </div>
                 </div>
-                <p id="storage-quota-note" class="text-[11px] text-slate-600 dark:text-slate-300">Pemakaian storage
-                    lokal: mengecek...</p>
+
             </div>
         </aside>
 
@@ -1257,25 +1326,27 @@
                     Calculation History
                 </h2>
                 <div class="history-toolbar">
-                    <button id="compare-btn" onclick="openComparisonView()" disabled class="history-btn history-btn-purple">
+                    <button id="compare-btn" onclick="openComparisonView()" disabled
+                        class="history-btn history-btn-purple">
                         <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 17l-5-5m0 0l5-5m-5 5h18M16 7l5 5m0 0l-5 5m5-5H3"></path>
                         </svg>
                         Compare (<span id="compare-count">0</span>)
                     </button>
-                    <button onclick="exportHistoryExcel()" class="history-btn history-btn-emerald">
+                    <button id="export-history-btn" onclick="exportHistoryExcel()"
+                        class="history-btn history-btn-emerald" disabled>
                         <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 7h16M4 12h16M4 17h16"></path>
                         </svg>
-                        Export Excel
+                        Export (<span id="export-count">0</span>)
                     </button>
                     <button onclick="document.getElementById('import-excel-input').click()"
                         class="history-btn history-btn-sky">
                         <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4v16m8-8H4"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                            </path>
                         </svg>
                         Import Excel
                     </button>
@@ -1290,8 +1361,8 @@
                         Clear All
                     </button>
                     <button onclick="toggleHistoryModal()" aria-label="Tutup modal riwayat"
-                        class="history-btn history-btn-neutral p-2"><svg
-                            aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="history-btn history-btn-neutral p-2"><svg aria-hidden="true" class="w-5 h-5" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12"></path>
                         </svg></button>
@@ -1306,7 +1377,7 @@
                                 <th class="px-3 md:px-4 py-2 md:py-3">Produk</th>
                                 <th class="px-3 md:px-4 py-2 md:py-3">Mode</th>
                                 <th class="px-3 md:px-4 py-2 md:py-3">D (m)</th>
-                                <th class="px-3 md:px-4 py-2 md:py-3">Q (m³/s)</th>
+                                <th class="px-3 md:px-4 py-2 md:py-3">Vi (m/s)</th>
                                 <th class="px-3 md:px-4 py-2 md:py-3">dp (μm)</th>
                                 <th
                                     class="px-3 md:px-4 py-2 md:py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400">
@@ -1314,7 +1385,14 @@
                                 <th
                                     class="px-3 md:px-4 py-2 md:py-3 bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400">
                                     ΔP SL (Pa)</th>
-                                <th class="px-3 md:px-4 py-2 md:py-3 text-center w-10">Pilih</th>
+                                <th class="px-3 md:px-4 py-2 md:py-3 text-center w-10">
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <input id="history-select-all" type="checkbox"
+                                            onchange="toggleSelectAllHistory(this.checked)"
+                                            class="w-4 h-4 accent-purple-600 cursor-pointer" title="Pilih semua">
+                                        <span>Pilih</span>
+                                    </div>
+                                </th>
                                 <th class="px-3 md:px-4 py-2 md:py-3 text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -1452,6 +1530,7 @@
         let pdDisplayUnit = 'pa';
         let lastCalcResults = {};
         let selectedCompareIndices = [];
+        let loadedRecordIdx = null;
         let compScene = null;
         let compCamera = null;
         let compRenderer = null;
@@ -1480,7 +1559,7 @@
         const FORM_FIELD_IDS = [
             'product-name',
             'geom-D', 'geom-h', 'geom-a', 'geom-b', 'geom-De', 'geom-S', 'geom-H', 'geom-B',
-            'phys-Q', 'phys-T', 'phys-RhoP', 'phys-Dp', 'phys-Mu', 'phys-K', 'std-fixed-var', 'input-FlowSpeed', 'history-limit'
+            'phys-Vi', 'phys-T', 'phys-RhoP', 'phys-Dp', 'phys-Mu', 'phys-K', 'std-fixed-var', 'input-FlowSpeed'
         ];
 
         const standardRatios = {
@@ -1533,26 +1612,7 @@
             scheduleSaveAppState();
         }
 
-        function getHistoryLimit() {
-            const select = document.getElementById('history-limit');
-            return parseInt(select && select.value ? select.value : '20', 10) || 20;
-        }
 
-        function trimHistoryToLimit(limit = getHistoryLimit()) {
-            if (calcHistory.length <= limit) return false;
-            calcHistory = calcHistory.slice(0, limit);
-            selectedCompareIndices = selectedCompareIndices.filter((idx) => idx < calcHistory.length);
-            return true;
-        }
-
-        async function onHistoryLimitChange() {
-            const limit = getHistoryLimit();
-            if (trimHistoryToLimit(limit)) {
-                await savePersistedValue(STORAGE_KEYS.history, calcHistory);
-                updateHistoryUI();
-            }
-            scheduleSaveAppState();
-        }
 
         function toggleCalcSteps() {
             const panel = document.getElementById('calc-steps-panel');
@@ -1744,9 +1804,7 @@
                 });
             }
 
-            if (trimHistoryToLimit(getHistoryLimit())) {
-                savePersistedValue(STORAGE_KEYS.history, calcHistory).catch(() => { });
-            }
+
             updateHistoryUI();
 
             setMode(savedState.mode === 'manual' ? 'manual' : 'standard');
@@ -1931,7 +1989,7 @@
             const h_cyl = getVal('geom-h');
             const H = getVal('geom-H');
             const B = getVal('geom-B');
-            const Q = getVal('phys-Q');
+            const Vi = getVal('phys-Vi');
             const T = getVal('phys-T');
             const rho_p = getVal('phys-RhoP');
             const dp_um = getVal('phys-Dp');
@@ -1943,7 +2001,7 @@
             const dp = dp_um * 1e-6;
             const n = 0.7;
 
-            const Vi = Q / Math.max(0.0001, (a * b));
+            const Q = Vi * a * b;
 
             const Ne = (1 / Math.max(a, 0.0001)) * (h_cyl + Math.max(0.001, H - h_cyl) / 2);
             const d50_m = Math.sqrt((9 * mu * b) / Math.max(0.0000001, (2 * Math.PI * Ne * Vi * Math.max(0.0001, (rho_p - rho_air)))));
@@ -2018,8 +2076,8 @@
             const stepsPanel = document.getElementById('calc-steps-panel');
             if (stepsPanel) {
                 stepsPanel.innerHTML = generateStepByStepHTML({
-                    D, a, b, De, S, h_cyl, H, B, Q, T, mu, rho_air, dp, dp_um,
-                    Vi: viSafe, n, l, d_cone, C, CP, SP, efficiency: efficiencySafe,
+                    D, a, b, De, S, h_cyl, H, B, Vi: viSafe, Q, T, mu, rho_air, dp, dp_um,
+                    n, l, d_cone, C, CP, SP, efficiency: efficiencySafe,
                     Pdyn, K, DH_SL, DP_SL: dpSlSafe,
                     alpha, lambda, ratio_barth, denominator_barth, epsilon_e, epsilon_i, DH_Barth, DP_Barth: dpBarthSafe,
                     Area, G_factor, phi, DH_Stairmand, DP_Stairmand: dpStairmandSafe,
@@ -2036,19 +2094,18 @@
             updateHistoryUI();
         }
 
-        async function saveToHistory() {
+        function buildCurrentRecord() {
             const stdEl = document.getElementById('std-type');
             const modeName = appMode === 'standard' ? stdEl.options[stdEl.selectedIndex].text : 'Manual Input';
             const productName = (document.getElementById('product-name').value || '').trim() || 'Unnamed';
-
-            const record = {
+            return {
                 id: Date.now(),
                 productName: productName,
                 timestamp: new Date().toISOString(),
                 mode: modeName,
                 D: getVal('geom-D'), a: getVal('geom-a'), b: getVal('geom-b'),
                 De: getVal('geom-De'), S: getVal('geom-S'), h: getVal('geom-h'), H: getVal('geom-H'), B: getVal('geom-B'),
-                Q: getVal('phys-Q'), dp: getVal('phys-Dp'), K: getVal('phys-K'),
+                Vi_input: getVal('phys-Vi'), dp: getVal('phys-Dp'), K: getVal('phys-K'),
                 eff: document.getElementById('res-eff').innerText,
                 dp_res: formatPD(lastCalcResults.DP_SL, 'pa'),
                 T: getVal('phys-T'),
@@ -2061,19 +2118,61 @@
                 d50_raw: Number.isFinite(lastCalcResults.d50_um) ? lastCalcResults.d50_um : null,
                 vi_raw: Number.isFinite(lastCalcResults.Vi) ? lastCalcResults.Vi : null
             };
+        }
 
+        async function saveNewToHistory() {
+            const record = buildCurrentRecord();
             calcHistory.unshift(record);
-            trimHistoryToLimit(getHistoryLimit());
+            loadedRecordIdx = null;
+            updateSaveButtonState();
 
             await savePersistedValue(STORAGE_KEYS.history, calcHistory);
             updateHistoryUI();
-            await updateStorageEstimate();
+            flashSaveBtn('save-history-btn');
+        }
 
-            const btn = document.querySelector('button[onclick="saveToHistory()"]');
-            const ogText = btn.innerHTML;
-            btn.innerHTML = 'OK Disimpan!';
+        async function updateLoadedRecord() {
+            if (loadedRecordIdx === null || loadedRecordIdx < 0 || loadedRecordIdx >= calcHistory.length) return;
+            const record = buildCurrentRecord();
+            record.id = calcHistory[loadedRecordIdx].id;
+            record.timestamp = new Date().toISOString();
+            record.updatedAt = record.timestamp;
+            calcHistory[loadedRecordIdx] = record;
+            loadedRecordIdx = null;
+            updateSaveButtonState();
+
+            await savePersistedValue(STORAGE_KEYS.history, calcHistory);
+            updateHistoryUI();
+            flashSaveBtn('save-history-btn');
+        }
+
+        function flashSaveBtn(id) {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            const og = btn.innerHTML;
+            btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> OK Disimpan!';
+            btn.classList.remove('bg-emerald-600');
             btn.classList.add('bg-green-500');
-            setTimeout(() => { btn.innerHTML = ogText; btn.classList.remove('bg-green-500'); }, 1500);
+            setTimeout(() => { btn.innerHTML = og; btn.classList.remove('bg-green-500'); btn.classList.add('bg-emerald-600'); }, 1500);
+        }
+
+        function clearLoadedRecord() {
+            loadedRecordIdx = null;
+            updateSaveButtonState();
+        }
+
+        function updateSaveButtonState() {
+            const mainBtn = document.getElementById('save-history-btn');
+            const loadedActions = document.getElementById('save-loaded-actions');
+            if (!mainBtn || !loadedActions) return;
+
+            if (loadedRecordIdx !== null && loadedRecordIdx >= 0 && loadedRecordIdx < calcHistory.length) {
+                mainBtn.style.display = 'none';
+                loadedActions.style.display = 'flex';
+            } else {
+                mainBtn.style.display = '';
+                loadedActions.style.display = 'none';
+            }
         }
 
         function updateHistoryUI() {
@@ -2101,7 +2200,7 @@
                     <td class="px-3 md:px-4 py-2 md:py-3 font-semibold text-emerald-600 dark:text-emerald-400">${escapeHtml(rec.productName || 'Unnamed')}</td>
                     <td class="px-3 md:px-4 py-2 md:py-3 font-medium text-slate-900 dark:text-white">${escapeHtml(rec.mode || '-')}</td>
                     <td class="px-3 md:px-4 py-2 md:py-3">${escapeHtml(rec.D ?? '-')}</td>
-                    <td class="px-3 md:px-4 py-2 md:py-3">${escapeHtml(rec.Q ?? '-')}</td>
+                    <td class="px-3 md:px-4 py-2 md:py-3">${escapeHtml(rec.Vi_input ?? rec.Q ?? '-')}</td>
                     <td class="px-3 md:px-4 py-2 md:py-3">${escapeHtml(rec.dp ?? '-')}</td>
                     <td class="px-3 md:px-4 py-2 md:py-3 font-bold text-blue-600 dark:text-blue-400">${escapeHtml(rec.eff || '-')}</td>
                     <td class="px-3 md:px-4 py-2 md:py-3 font-bold text-orange-600 dark:text-orange-400">${escapeHtml(rec.dp_res || '-')}</td>
@@ -2131,12 +2230,14 @@
             if (confirm("Hapus semua riwayat perhitungan?")) {
                 calcHistory = [];
                 selectedCompareIndices = [];
+                loadedRecordIdx = null;
+                updateSaveButtonState();
                 compRecords = [];
                 closeComparisonView();
                 await removePersistedValue(STORAGE_KEYS.history);
                 updateHistoryUI();
                 await saveAppState();
-                await updateStorageEstimate();
+
             }
         }
 
@@ -2149,9 +2250,14 @@
             selectedCompareIndices = selectedCompareIndices
                 .filter(i => i !== idx)
                 .map(i => i > idx ? i - 1 : i);
+            // Adjust loaded record tracking
+            if (loadedRecordIdx !== null) {
+                if (loadedRecordIdx === idx) { loadedRecordIdx = null; updateSaveButtonState(); }
+                else if (loadedRecordIdx > idx) { loadedRecordIdx--; }
+            }
             updateHistoryUI();
             await savePersistedValue(STORAGE_KEYS.history, calcHistory);
-            await updateStorageEstimate();
+
         }
 
         function exportHistoryExcel() {
@@ -2164,7 +2270,21 @@
                 return;
             }
 
-            const rows = calcHistory.map((rec, idx) => ({
+            if (selectedCompareIndices.length < 1) {
+                alert('Pilih minimal 1 data history untuk export.');
+                return;
+            }
+
+            const sourceRecords = selectedCompareIndices
+                .filter(i => i >= 0 && i < calcHistory.length)
+                .sort((a, b) => a - b)
+                .map(i => calcHistory[i]);
+            if (sourceRecords.length === 0) {
+                alert('Data yang dipilih tidak valid.');
+                return;
+            }
+
+            const rows = sourceRecords.map((rec, idx) => ({
                 'No': idx + 1,
                 'Produk': rec.productName || '',
                 'Mode': rec.mode || '',
@@ -2176,7 +2296,7 @@
                 'h (m)': rec.h ?? '',
                 'H (m)': rec.H ?? '',
                 'B (m)': rec.B ?? '',
-                'Q (m³/s)': rec.Q ?? '',
+                'Vi inlet (m/s)': rec.Vi_input ?? rec.Q ?? '',
                 'T (K)': rec.T ?? '',
                 'ρp (kg/m³)': rec.rhoP ?? '',
                 'dp (μm)': rec.dp ?? '',
@@ -2199,9 +2319,17 @@
             ws['!cols'] = colWidths;
 
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'History');
+            XLSX.utils.book_append_sheet(wb, ws, 'Data History');
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
             XLSX.writeFile(wb, `cyclone-history-${timestamp}.xlsx`);
+        }
+
+        function toggleSelectAllHistory(checked) {
+            const checkboxes = document.querySelectorAll('[data-compare-idx]');
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = !!checked;
+            });
+            updateCompareSelection();
         }
 
         async function importHistoryExcel(event) {
@@ -2228,14 +2356,14 @@
                     'Produk': 'productName', 'Mode': 'mode',
                     'D (m)': 'D', 'a (m)': 'a', 'b (m)': 'b', 'De (m)': 'De',
                     'S (m)': 'S', 'h (m)': 'h', 'H (m)': 'H', 'B (m)': 'B',
-                    'Q (m³/s)': 'Q', 'T (K)': 'T', 'ρp (kg/m³)': 'rhoP',
+                    'Vi inlet (m/s)': 'Vi_input', 'T (K)': 'T', 'ρp (kg/m³)': 'rhoP',
                     'dp (μm)': 'dp', 'μ (Pa·s)': 'mu', 'K': 'K',
                     'Vi (m/s)': 'vi_raw', 'd50 (μm)': 'd50_raw',
                     'η (%)': 'eff_raw', 'ΔP S&L (Pa)': 'dp_sl_raw',
                     'ΔP Barth (Pa)': 'dp_barth_raw', 'ΔP Stairmand (Pa)': 'dp_stairmand_raw',
                     'Timestamp': 'timestamp'
                 };
-                const numericFields = new Set(['D', 'a', 'b', 'De', 'S', 'h', 'H', 'B', 'Q', 'T', 'rhoP', 'dp', 'mu', 'K', 'vi_raw', 'd50_raw', 'eff_raw', 'dp_sl_raw', 'dp_barth_raw', 'dp_stairmand_raw']);
+                const numericFields = new Set(['D', 'a', 'b', 'De', 'S', 'h', 'H', 'B', 'Vi_input', 'T', 'rhoP', 'dp', 'mu', 'K', 'vi_raw', 'd50_raw', 'eff_raw', 'dp_sl_raw', 'dp_barth_raw', 'dp_stairmand_raw']);
 
                 const imported = jsonRows.map(row => {
                     const rec = {};
@@ -2265,14 +2393,10 @@
                     calcHistory = calcHistory.concat(imported);
                 }
 
-                // Trim to limit
-                const limit = getHistoryLimit();
-                if (calcHistory.length > limit) calcHistory = calcHistory.slice(0, limit);
 
                 selectedCompareIndices = [];
                 updateHistoryUI();
                 await savePersistedValue(STORAGE_KEYS.history, calcHistory);
-                await updateStorageEstimate();
                 alert(`Import berhasil! ${imported.length} data diimport.`);
             } catch (error) {
                 console.warn('Import Excel gagal:', error);
@@ -2287,7 +2411,21 @@
             if (!rec) return;
             const productInput = document.getElementById('product-name');
             if (productInput) productInput.value = rec.productName || '';
-            setMode('manual');
+
+            // Restore correct mode based on saved record
+            const stdSelect = document.getElementById('std-type');
+            let matchedStandard = false;
+            if (rec.mode && rec.mode !== 'Manual Input' && stdSelect) {
+                // Try to match the saved mode text to one of the standard options
+                for (let i = 0; i < stdSelect.options.length; i++) {
+                    if (stdSelect.options[i].text === rec.mode) {
+                        stdSelect.selectedIndex = i;
+                        matchedStandard = true;
+                        break;
+                    }
+                }
+            }
+
             document.getElementById('geom-D').value = rec.D;
             document.getElementById('geom-a').value = rec.a;
             document.getElementById('geom-b').value = rec.b;
@@ -2296,12 +2434,32 @@
             document.getElementById('geom-h').value = rec.h;
             document.getElementById('geom-H').value = rec.H;
             document.getElementById('geom-B').value = rec.B !== undefined ? rec.B : document.getElementById('geom-B').value;
-            document.getElementById('phys-Q').value = rec.Q;
+            document.getElementById('phys-Vi').value = rec.Vi_input ?? rec.Q ?? 25;
             document.getElementById('phys-Dp').value = rec.dp;
             if (rec.K !== undefined) document.getElementById('phys-K').value = rec.K;
             if (rec.T !== undefined) document.getElementById('phys-T').value = rec.T;
             if (rec.mu !== undefined) document.getElementById('phys-Mu').value = rec.mu;
             if (rec.rhoP !== undefined) document.getElementById('phys-RhoP').value = rec.rhoP;
+
+            // Set mode AFTER filling values — standard mode's applyStandardRatios may
+            // override geometry, so we re-apply saved values afterward
+            if (matchedStandard) {
+                setMode('standard');
+                // Re-apply the saved geometry since applyStandardRatios may have overwritten some
+                document.getElementById('geom-D').value = rec.D;
+                document.getElementById('geom-a').value = rec.a;
+                document.getElementById('geom-b').value = rec.b;
+                document.getElementById('geom-De').value = rec.De;
+                if (rec.S !== undefined) document.getElementById('geom-S').value = rec.S;
+                document.getElementById('geom-h').value = rec.h;
+                document.getElementById('geom-H').value = rec.H;
+                if (rec.B !== undefined) document.getElementById('geom-B').value = rec.B;
+            } else {
+                setMode('manual');
+            }
+
+            loadedRecordIdx = idx;
+            updateSaveButtonState();
             triggerRecalc();
             toggleHistoryModal();
         }
@@ -2331,9 +2489,21 @@
             });
 
             const btn = document.getElementById('compare-btn');
+            const exportBtn = document.getElementById('export-history-btn');
             const count = document.getElementById('compare-count');
+            const selectAll = document.getElementById('history-select-all');
+            const selectedCount = selectedCompareIndices.length;
+            const totalCount = checkboxes.length;
             if (btn) btn.disabled = selectedCompareIndices.length < 2;
+            if (exportBtn) exportBtn.disabled = selectedCount < 1;
             if (count) count.textContent = String(selectedCompareIndices.length);
+            const exportCount = document.getElementById('export-count');
+            if (exportCount) exportCount.textContent = String(selectedCount);
+            if (selectAll) {
+                selectAll.disabled = totalCount === 0;
+                selectAll.checked = totalCount > 0 && selectedCount === totalCount;
+                selectAll.indeterminate = selectedCount > 0 && selectedCount < totalCount;
+            }
         }
 
         function openComparisonView() {
@@ -2407,7 +2577,7 @@
                 ['H (m)', (rec) => asFixed(rec.H, 3)],
                 ['B (m)', (rec) => asFixed(rec.B, 3)],
                 // -- Kondisi Operasional --
-                ['Q (m³/s)', (rec) => asFixed(rec.Q, 3)],
+                ['Vi (m/s)', (rec) => asFixed(rec.Vi_input ?? rec.Q, 2)],
                 ['T (K)', (rec) => asFixed(rec.T, 1)],
                 ['ρp (kg/m³)', (rec) => asFixed(rec.rhoP, 0)],
                 ['dp (μm)', (rec) => asFixed(rec.dp, 2)],
@@ -3316,55 +3486,7 @@
             return db ? 'IndexedDB' : 'localStorage';
         }
 
-        function formatStorageBytes(bytes) {
-            if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
-            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-            let value = bytes;
-            let unitIdx = 0;
-            while (value >= 1024 && unitIdx < units.length - 1) {
-                value /= 1024;
-                unitIdx += 1;
-            }
-            return `${value.toFixed(unitIdx === 0 ? 0 : 1)} ${units[unitIdx]}`;
-        }
 
-        async function updateStorageEstimate() {
-            const note = document.getElementById('storage-quota-note');
-            if (!note) return;
-
-            if (!navigator.storage || !navigator.storage.estimate) {
-                note.className = 'text-[11px] text-slate-600 dark:text-slate-300';
-                note.textContent = 'Pemakaian storage lokal: tidak tersedia di browser ini.';
-                return;
-            }
-
-            try {
-                const estimate = await navigator.storage.estimate();
-                const usage = Number(estimate.usage || 0);
-                const quota = Number(estimate.quota || 0);
-
-                if (!quota) {
-                    note.className = 'text-[11px] text-slate-600 dark:text-slate-300';
-                    note.textContent = `Pemakaian storage lokal: ${formatStorageBytes(usage)}`;
-                    return;
-                }
-
-                const percentage = (usage / quota) * 100;
-                note.textContent = `Pemakaian storage lokal: ${formatStorageBytes(usage)} / ${formatStorageBytes(quota)} (${percentage.toFixed(1)}%)`;
-
-                if (percentage >= 80) {
-                    note.className = 'text-[11px] text-red-600 dark:text-red-400 font-semibold';
-                } else if (percentage >= 60) {
-                    note.className = 'text-[11px] text-amber-600 dark:text-amber-400';
-                } else {
-                    note.className = 'text-[11px] text-slate-600 dark:text-slate-300';
-                }
-            } catch (error) {
-                console.warn('Gagal membaca quota storage:', error);
-                note.className = 'text-[11px] text-slate-600 dark:text-slate-300';
-                note.textContent = 'Pemakaian storage lokal: gagal dibaca.';
-            }
-        }
 
         async function requestPersistentStorage() {
             const storageEngine = await getStorageEngineLabel();
@@ -3387,7 +3509,6 @@
             }
 
             updateStorageStatus(statusText, isPersistent);
-            await updateStorageEstimate();
         }
 
         async function registerServiceWorker() {
@@ -3770,10 +3891,6 @@
                 await loadHistory();
                 const hasSavedState = await applySavedState();
                 if (!hasSavedState) {
-                    if (trimHistoryToLimit(getHistoryLimit())) {
-                        await savePersistedValue(STORAGE_KEYS.history, calcHistory);
-                        updateHistoryUI();
-                    }
                     calculatePhysics();
                 }
             } finally {

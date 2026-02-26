@@ -2,6 +2,12 @@
   publish = "."
 
 [[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/aplikasi.html"
   to = "/"
   status = 301
@@ -14,6 +20,21 @@
   force = true
 
 [[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/offline.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
   for = "/sw.js"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
@@ -22,6 +43,7 @@
   for = "/manifest.webmanifest"
   [headers.values]
     Content-Type = "application/manifest+json; charset=utf-8"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/vendor/*"
